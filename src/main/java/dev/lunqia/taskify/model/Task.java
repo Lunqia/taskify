@@ -1,11 +1,10 @@
 package dev.lunqia.taskify.model;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -32,22 +31,12 @@ public class Task {
 
   private boolean completed;
   private LocalDateTime deadline;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+
+  @Embedded private Audit audit;
 
   public void updateFrom(Task task) {
     description = task.getDescription();
     completed = task.isCompleted();
     deadline = task.getDeadline();
-  }
-
-  @PrePersist
-  private void prePersist() {
-    createdAt = LocalDateTime.now();
-  }
-
-  @PreUpdate
-  private void preUpdate() {
-    updatedAt = LocalDateTime.now();
   }
 }
