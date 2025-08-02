@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class TaskConfigurationProperties {
-    private Template template;
+  private Template template;
 
   @Getter
   @Setter
   public static class Template {
-      /** Whether to enable the feature of creating multiple tasks from a template. */
-      private boolean allowMultipleTasks;
+    /** Whether to enable the feature of creating multiple tasks from a template. */
+    private boolean allowMultipleTasks;
   }
 }

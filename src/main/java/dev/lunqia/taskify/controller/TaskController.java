@@ -52,15 +52,21 @@ public class TaskController {
   }
 
   @PutMapping("/v1/tasks/{id}")
-  public ResponseEntity<Task> updateTask(@PathVariable long id, @RequestBody @Valid Task task) {
+  public ResponseEntity<Task> updateTask(
+      @PathVariable long id, @RequestBody @Valid Task taskToUpdate) {
     if (!taskRepository.existsById(id)) {
       log.warn("[PUT] /v1/tasks/{} - Task not found", id);
       return ResponseEntity.notFound().build();
     }
 
-    log.info("[PUT] /v1/tasks/{} - Updating task: {}", id, task);
-    task.setId(id);
-    taskRepository.save(task);
+    log.info("[PUT] /v1/tasks/{} - Updating task: {}", id, taskToUpdate);
+    taskRepository
+        .findById(id)
+        .ifPresent(
+            task -> {
+              task.updateFrom(taskToUpdate);
+              taskRepository.save(task);
+            });
     return ResponseEntity.noContent().build();
   }
 
