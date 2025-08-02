@@ -2,8 +2,8 @@ package dev.lunqia.taskify.controller;
 
 import dev.lunqia.taskify.model.Task;
 import dev.lunqia.taskify.model.TaskRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,8 +28,7 @@ public class TaskController {
   public ResponseEntity<Task> createTask(@RequestBody @Valid Task task) {
     log.info("[POST] /v1/tasks - Creating task: {}", task);
     Task savedTask = taskRepository.save(task);
-    return ResponseEntity.created(URI.create("/v1/tasks/" + savedTask.getId()))
-        .body(savedTask);
+    return ResponseEntity.created(URI.create("/v1/tasks/" + savedTask.getId())).body(savedTask);
   }
 
   @GetMapping(
@@ -61,6 +61,19 @@ public class TaskController {
     log.info("[PUT] /v1/tasks/{} - Updating task: {}", id, task);
     task.setId(id);
     taskRepository.save(task);
+    return ResponseEntity.noContent().build();
+  }
+
+  @Transactional
+  @PatchMapping("/v1/tasks/{id}")
+  public ResponseEntity<Task> toggleTaskCompletion(@PathVariable long id) {
+    if (!taskRepository.existsById(id)) {
+      log.warn("[PATCH] /v1/tasks/{} - Task not found", id);
+      return ResponseEntity.notFound().build();
+    }
+
+    log.info("[PATCH] /v1/tasks/{} - Toggling task completion", id);
+    taskRepository.findById(id).ifPresent(task -> task.setCompleted(!task.isCompleted()));
     return ResponseEntity.noContent().build();
   }
 }

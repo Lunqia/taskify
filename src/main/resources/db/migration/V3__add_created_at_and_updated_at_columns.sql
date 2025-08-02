@@ -1,0 +1,4 @@
+ALTER TABLE tasks
+    ADD COLUMN created_at DATETIME NULL;
+ALTER TABLE tasks
+    ADD COLUMN updated_at DATETIME NULL;
