@@ -1,15 +1,15 @@
 package dev.lunqia.taskify.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "task_groups")
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Task {
+public class TaskGroup {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
@@ -32,18 +32,9 @@ public class Task {
   private String description;
 
   private boolean completed;
-  private LocalDateTime deadline;
 
   @Embedded private Audit audit;
 
-  @ManyToOne
-  @JoinColumn(name = "task_group_id")
-  private TaskGroup group;
-
-  public void updateFrom(Task task) {
-    description = task.getDescription();
-    completed = task.isCompleted();
-    deadline = task.getDeadline();
-    group = task.getGroup();
-  }
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+  private Set<Task> tasks;
 }
