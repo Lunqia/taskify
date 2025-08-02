@@ -1,6 +1,9 @@
 spring:
   main:
     banner-mode: off
+  jpa:
+    hibernate:
+      ddl-auto: validate
 task:
   template:
     allowMultipleTasks: false
