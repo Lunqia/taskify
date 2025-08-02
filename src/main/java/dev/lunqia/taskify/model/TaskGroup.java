@@ -1,7 +1,6 @@
 package dev.lunqia.taskify.model;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,8 +31,6 @@ public class TaskGroup {
   private String description;
 
   private boolean completed;
-
-  @Embedded private Audit audit;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
   private Set<Task> tasks;
