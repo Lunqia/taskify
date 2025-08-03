@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface SqlTaskGroupRepository
     extends TaskGroupRepository, JpaRepository<TaskGroup, Long> {
   @Override
-  @Query("FROM TaskGroup tg JOIN FETCH tg.tasks")
+  @Query("SELECT DISTINCT tg FROM TaskGroup tg JOIN FETCH tg.tasks")
   List<TaskGroup> findAll();
+
+  @Override
+  boolean existsByCompletedIsFalseAndProject_Id(Long projectId);
 }
