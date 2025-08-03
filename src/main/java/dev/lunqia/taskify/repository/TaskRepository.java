@@ -12,5 +12,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
   @Query(nativeQuery = true, value = "SELECT EXISTS(SELECT 1 FROM tasks WHERE id = :id)")
   boolean existsById(@Param("id") Long id);
 
-  boolean existsByCompletedIsFalseAndGroup_Id(Long id);
+  boolean existsByCompletedIsFalseAndGroupId(Long id);
 }

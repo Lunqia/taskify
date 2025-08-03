@@ -1,5 +1,6 @@
 package dev.lunqia.taskify.service;
 
+import dev.lunqia.taskify.model.Project;
 import dev.lunqia.taskify.model.TaskGroup;
 import dev.lunqia.taskify.model.projection.GroupReadModel;
 import dev.lunqia.taskify.model.projection.GroupWriteModel;
@@ -16,7 +17,11 @@ public class TaskGroupService {
   private final TaskRepository taskRepository;
 
   public GroupReadModel createGroup(GroupWriteModel groupWriteModel) {
-    TaskGroup taskGroup = taskGroupRepository.save(groupWriteModel.toTaskGroup());
+    return createGroup(groupWriteModel, null);
+  }
+
+  public GroupReadModel createGroup(GroupWriteModel groupWriteModel, Project project) {
+    TaskGroup taskGroup = taskGroupRepository.save(groupWriteModel.toTaskGroup(project));
     return new GroupReadModel(taskGroup);
   }
 
@@ -25,7 +30,7 @@ public class TaskGroupService {
   }
 
   public void toggleGroupCompletion(Long groupId) {
-    if (taskGroupRepository.existsByCompletedIsFalseAndProject_Id(groupId)) {
+    if (taskRepository.existsByCompletedIsFalseAndGroupId(groupId)) {
       throw new IllegalStateException("Cannot complete group with incomplete tasks");
     }
 

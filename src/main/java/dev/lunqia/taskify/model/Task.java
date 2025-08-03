@@ -15,6 +15,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @Table(name = "tasks")
@@ -26,7 +29,7 @@ import lombok.Setter;
 public class Task {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  private Long id;
 
   @NotBlank(message = "Description cannot be blank")
   private String description;
@@ -34,7 +37,7 @@ public class Task {
   private boolean completed;
   private LocalDateTime deadline;
 
-  @Embedded private Audit audit = new Audit();
+  @Builder.Default @Embedded private Audit audit = new Audit();
 
   @ManyToOne
   @JoinColumn(name = "task_group_id")
@@ -45,5 +48,39 @@ public class Task {
     completed = task.isCompleted();
     deadline = task.getDeadline();
     group = task.getGroup();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Task task)) return false;
+    return new EqualsBuilder()
+        .append(id, task.id)
+        .append(description, task.description)
+        .append(completed, task.completed)
+        .append(deadline, task.deadline)
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(id)
+        .append(description)
+        .append(completed)
+        .append(deadline)
+        .toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("id", id)
+        .append("description", description)
+        .append("completed", completed)
+        .append("deadline", deadline)
+        .append("audit", audit)
+        .append("group", group)
+        .toString();
   }
 }

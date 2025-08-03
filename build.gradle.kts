@@ -24,6 +24,7 @@ dependencies {
     implementation("org.projectlombok:lombok")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.flywaydb:flyway-core")
+    implementation("org.apache.commons:commons-lang3")
     annotationProcessor("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("com.h2database:h2")

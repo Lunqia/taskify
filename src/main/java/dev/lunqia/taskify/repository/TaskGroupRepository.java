@@ -12,5 +12,5 @@ public interface TaskGroupRepository extends JpaRepository<TaskGroup, Long> {
   @Query("SELECT DISTINCT tg FROM TaskGroup tg JOIN FETCH tg.tasks")
   List<TaskGroup> findAll();
 
-  boolean existsByCompletedIsFalseAndProject_Id(Long projectId);
+  boolean existsByCompletedIsFalseAndProjectId(Long projectId);
 }

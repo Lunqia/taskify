@@ -46,14 +46,14 @@ public class TaskController {
   }
 
   @GetMapping("/v1/tasks/{id}")
-  public ResponseEntity<Task> getTaskById(@PathVariable long id) {
+  public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
     log.info("[GET] /v1/tasks/{} - Fetching task", id);
     return ResponseEntity.of(taskRepository.findById(id));
   }
 
   @PutMapping("/v1/tasks/{id}")
   public ResponseEntity<Task> updateTask(
-      @PathVariable long id, @RequestBody @Valid Task taskToUpdate) {
+      @PathVariable Long id, @RequestBody @Valid Task taskToUpdate) {
     if (!taskRepository.existsById(id)) {
       log.warn("[PUT] /v1/tasks/{} - Task not found", id);
       return ResponseEntity.notFound().build();
@@ -72,7 +72,7 @@ public class TaskController {
 
   @Transactional
   @PatchMapping("/v1/tasks/{id}")
-  public ResponseEntity<Task> toggleTaskCompletion(@PathVariable long id) {
+  public ResponseEntity<Task> toggleTaskCompletion(@PathVariable Long id) {
     if (!taskRepository.existsById(id)) {
       log.warn("[PATCH] /v1/tasks/{} - Task not found", id);
       return ResponseEntity.notFound().build();
