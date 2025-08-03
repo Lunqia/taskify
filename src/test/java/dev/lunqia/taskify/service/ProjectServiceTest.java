@@ -1,7 +1,7 @@
 package dev.lunqia.taskify.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -50,8 +50,11 @@ class ProjectServiceTest {
     when(mockTemplate.isAllowMultipleTasks()).thenReturn(false);
     when(taskConfigurationProperties.getTemplate()).thenReturn(mockTemplate);
 
-    // WHEN / THEN
-    assertThatThrownBy(() -> toTest.createGroup(LocalDateTime.now(), 1L))
+    // WHEN
+    Throwable thrown = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 1L));
+
+    // THEN
+    assertThat(thrown)
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("Only one active task group is allowed");
   }
