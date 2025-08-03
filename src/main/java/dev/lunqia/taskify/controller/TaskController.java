@@ -1,7 +1,7 @@
 package dev.lunqia.taskify.controller;
 
 import dev.lunqia.taskify.model.Task;
-import dev.lunqia.taskify.model.TaskRepository;
+import dev.lunqia.taskify.repository.TaskRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import java.net.URI;
