@@ -34,7 +34,7 @@ public class Task {
   private boolean completed;
   private LocalDateTime deadline;
 
-  @Embedded private Audit audit;
+  @Embedded private Audit audit = new Audit();
 
   @ManyToOne
   @JoinColumn(name = "task_group_id")

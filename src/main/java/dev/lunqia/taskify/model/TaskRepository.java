@@ -2,6 +2,7 @@ package dev.lunqia.taskify.model;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -12,6 +13,8 @@ public interface TaskRepository {
   Page<Task> findAll(Pageable page);
 
   boolean existsById(Long id);
+
+  boolean existsByCompletedIsFalseAndGroup_Id(Long id);
 
   Optional<Task> findById(Long id);
 

@@ -1,5 +1,7 @@
-package dev.lunqia.taskify.model;
+package dev.lunqia.taskify.adapter;
 
+import dev.lunqia.taskify.model.Task;
+import dev.lunqia.taskify.model.TaskRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,4 +12,7 @@ public interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, L
   @Override
   @Query(nativeQuery = true, value = "SELECT EXISTS(SELECT 1 FROM tasks WHERE id = :id)")
   boolean existsById(@Param("id") Long id);
+
+  @Override
+  boolean existsByCompletedIsFalseAndGroup_Id(Long id);
 }
